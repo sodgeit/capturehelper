@@ -50,7 +50,45 @@ include(ObsHelpers)
 # Set default compiler flags
 include(CompilerConfig)
 
-# Allow selection of common build types via UI
+# Must be a string in the format of "x.x.x-rcx"
+if(DEFINED RELEASE_CANDIDATE)
+	set(OBS_VERSION "${RELEASE_CANDIDATE}")
+	string(REPLACE "-rc" "." RC_SPLIT ${RELEASE_CANDIDATE})
+	string(REPLACE "." ";" RC_SPLIT ${RC_SPLIT})
+	message(WARNING "******************************************************************************\nRelease candidate deteced, OBS_VERSION is now: ${OBS_VERSION}\n******************************************************************************")
+	list(GET RC_SPLIT 0 OBS_RELEASE_CANDIDATE_MAJOR)
+	list(GET RC_SPLIT 1 OBS_RELEASE_CANDIDATE_MINOR)
+	list(GET RC_SPLIT 2 OBS_RELEASE_CANDIDATE_PATCH)
+	list(GET RC_SPLIT 3 OBS_RELEASE_CANDIDATE)
+else()
+	set(OBS_RELEASE_CANDIDATE_MAJOR 0)
+	set(OBS_RELEASE_CANDIDATE_MINOR 0)
+	set(OBS_RELEASE_CANDIDATE_PATCH 0)
+	set(OBS_RELEASE_CANDIDATE 0)
+endif()
+
+# Binary Versioning for Windows
+if(WIN32)
+	string(REPLACE "-" ";" UI_VERSION_SPLIT ${OBS_VERSION})
+	list(GET UI_VERSION_SPLIT 0 UI_VERSION)
+	string(REPLACE "." ";" UI_VERSION_SEMANTIC ${UI_VERSION})
+	list(GET UI_VERSION_SEMANTIC 0 UI_VERSION_MAJOR)
+	list(GET UI_VERSION_SEMANTIC 1 UI_VERSION_MINOR)
+	list(GET UI_VERSION_SEMANTIC 2 UI_VERSION_PATCH)
+	set(OBS_COMPANY_NAME "OBS")
+	set(OBS_PRODUCT_NAME "Capturehelper based on OBS Studio")
+	set(OBS_COMMENTS "Free and open source software for video recording and live streaming")
+	set(OBS_LEGAL_COPYRIGHT "(C) Hugh Bailey")
+	set(MODULE_DESCRIPTION "OBS Studio")
+	configure_file(UI/obs.rc.in ${PROJECT_BINARY_DIR}/obs.rc)
+endif()
+
+if(MSVC AND NOT EXISTS "${CMAKE_BINARY_DIR}/ALL_BUILD.vcxproj.user")
+	file(GENERATE
+		OUTPUT "${CMAKE_BINARY_DIR}/ALL_BUILD.vcxproj.user"
+		INPUT "${CMAKE_SOURCE_DIR}/cmake/ALL_BUILD.vcxproj.user.in")
+endif()
+
 if(NOT CMAKE_BUILD_TYPE)
   set(CMAKE_BUILD_TYPE
       "RelWithDebInfo"
