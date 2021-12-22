@@ -3377,6 +3377,7 @@ int main(int argc, char *argv[])
 				"--scene <string>: Start with specific scene.\n\n"
 				"--studio-mode: Enable studio mode.\n"
 				"--minimize-to-tray: Minimize to system tray.\n"
+				"--hide-trayicon: Do not show the system trayicon.\n"
 #if ALLOW_PORTABLE_MODE
 				"--portable, -p: Use portable mode.\n"
 #endif
