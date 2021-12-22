@@ -1334,15 +1334,17 @@ bool OBSBasic::LoadService()
 	OBSDataAutoRelease settings = obs_data_get_obj(data, "settings");
 	OBSDataAutoRelease hotkey_data = obs_data_get_obj(data, "hotkeys");
 
-	if(opt_custom_stream_settings) {
+	if (opt_custom_stream_settings) {
 		obs_data_set_string(data, "type", "rtmp_custom");
 	}
-	if(!opt_custom_stream_server.empty()) {
-		obs_data_set_string(settings, "server", opt_custom_stream_server.c_str());
+	if (!opt_custom_stream_server.empty()) {
+		obs_data_set_string(settings, "server",
+				    opt_custom_stream_server.c_str());
 	}
 
-	if(!opt_custom_stream_key.empty()) {
-		obs_data_set_string(settings, "key", opt_custom_stream_key.c_str());
+	if (!opt_custom_stream_key.empty()) {
+		obs_data_set_string(settings, "key",
+				    opt_custom_stream_key.c_str());
 	}
 
 	service = obs_service_create(type, "default_service", settings,
@@ -2087,7 +2089,7 @@ void OBSBasic::OBSInit()
 #ifdef _WIN32
 	SetWin32DropStyle(this);
 
-	if (!hideWindowOnStart && !opt_minimize_tray) {
+	if  (!hideWindowOnStart && !opt_minimize_tray) {
 		show();
 	}
 #endif
@@ -2113,7 +2115,7 @@ void OBSBasic::OBSInit()
 	}
 
 #ifndef _WIN32
-	if (!hideWindowOnStart && !opt_minimize_tray) {
+	if  (!hideWindowOnStart && !opt_minimize_tray) {
 		show();
 	}
 #endif
@@ -9595,7 +9597,7 @@ void OBSBasic::SystemTrayInit()
 	trayMenu->addSeparator();
 	trayMenu->addAction(exit);
 	trayIcon->setContextMenu(trayMenu);
-	if(opt_hide_trayicon) {
+	if (opt_hide_trayicon) {
 		trayIcon->hide();
 	} else {
 		trayIcon->show();
@@ -9673,7 +9675,7 @@ void OBSBasic::SystemTray(bool firstStarted)
 	if (!sysTrayEnabled) {
 		trayIcon->hide();
 	} else {
-		if(!opt_hide_trayicon) {
+		if (!opt_hide_trayicon) {
 			trayIcon->show();
 		}
 		if (firstStarted && (sysTrayWhenStarted || opt_minimize_tray)) {
