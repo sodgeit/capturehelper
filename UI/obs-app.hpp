@@ -290,6 +290,12 @@ extern std::string opt_custom_stream_key;
 extern uint64_t opt_custom_vbitrate;
 extern uint64_t opt_custom_abitrate;
 extern bool restart;
+extern bool close_after_streaming;
+
+#ifdef _WIN32
+extern "C" void install_dll_blocklist_hook(void);
+extern "C" void log_blocked_dlls(void);
+#endif
 
 #ifdef _WIN32
 extern "C" void install_dll_blocklist_hook(void);
