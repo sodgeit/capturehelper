@@ -98,6 +98,7 @@ bool opt_start_replaybuffer = false;
 bool opt_start_virtualcam = false;
 bool opt_minimize_tray = false;
 bool opt_hide_trayicon = false;
+bool opt_close_after_streaming = false;
 bool opt_allow_opengl = false;
 bool opt_always_on_top = false;
 #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
@@ -2547,6 +2548,10 @@ static int run_program(fstream &logFile, int argc, char *argv[])
 		QProcess::startDetached(qApp->arguments()[0],
 					qApp->arguments());
 
+	if (opt_close_after_streaming) {
+		return EXIT_STOPPED_STREAM;
+	}
+
 	return ret;
 }
 
@@ -3378,6 +3383,10 @@ int main(int argc, char *argv[])
 		} else if (arg_is(argv[i], "--hide-trayicon", nullptr)) {
 			opt_hide_trayicon = true;
 
+		} else if (arg_is(argv[i], "--close-after-streaming",
+				  nullptr)) {
+			opt_close_after_streaming = true;
+
 		} else if (arg_is(argv[i], "--studio-mode", nullptr)) {
 			opt_studio_mode = true;
 
@@ -3423,6 +3432,7 @@ int main(int argc, char *argv[])
 				"--studio-mode: Enable studio mode.\n"
 				"--minimize-to-tray: Minimize to system tray.\n"
 				"--hide-trayicon: Do not show the system trayicon.\n"
+				"--close-after-streaming: Close the program after streaming.\n"
 #if ALLOW_PORTABLE_MODE
 				"--portable, -p: Use portable mode.\n"
 #endif
