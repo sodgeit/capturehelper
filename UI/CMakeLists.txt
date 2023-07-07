@@ -109,4 +109,4 @@ foreach(graphics_library IN ITEMS opengl metal d3d11)
   endif()
 endforeach()
 
-set_target_properties_obs(obs-studio PROPERTIES FOLDER frontend OUTPUT_NAME obs)
+set_target_properties_obs(obs-studio PROPERTIES FOLDER frontend OUTPUT_NAME capturehelper)
